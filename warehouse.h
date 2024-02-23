@@ -6,15 +6,23 @@
 #include <vector>
 #include "constants.h"
 
+#include "ui_mainwindow.h"
+
 class Warehouse: public QObject
 {
     Q_OBJECT
 public:
     Warehouse(QObject* parent = nullptr);
+
     int get_size() const;
-    std::vector<Cell> get_cells() const;
+
     Cell& operator[](int i);
+
+    int add(Ui::MainWindow* ui);
+
+    int del(Ui::MainWindow* ui);
 public slots:
+
 private:
     std::vector <Cell> cells;
 

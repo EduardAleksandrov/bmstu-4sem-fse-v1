@@ -51,156 +51,159 @@ void MainWindow::on_pushButton_add_clicked()
 //    ui->tableView->sortByColumn(1);
 //    model->clear();
 */
-    ui->listWidget->clear();
-    ui->tableView->setModel(NULL);
+//    ui->listWidget->clear();
+//    ui->tableView->setModel(NULL);
 
-    QString detail_code = ui->lineEdit->text();
-    QString str_quantity = ui->lineEdit_2->text();
-    int detail_quantity = str_quantity.toInt();
+//    QString detail_code = ui->lineEdit->text();
+//    QString str_quantity = ui->lineEdit_2->text();
+//    int detail_quantity = str_quantity.toInt();
 
-    if(detail_code == "" || str_quantity == "")
-    {
-        ui->listWidget->addItem("Деталь или количество не заполнены");
-        ui->listWidget->item(0)->setForeground(Qt::red);
-        return;
-    }
+//    if(detail_code == "" || str_quantity == "")
+//    {
+//        ui->listWidget->addItem("Деталь или количество не заполнены");
+//        ui->listWidget->item(0)->setForeground(Qt::red);
+//        return;
+//    }
 
-    if(detail_quantity == 0)
-    {
-        ui->listWidget->addItem("Ошибка в количестве");
-        ui->listWidget->item(0)->setForeground(Qt::red);
-        return;
-    }
+//    if(detail_quantity == 0)
+//    {
+//        ui->listWidget->addItem("Ошибка в количестве");
+//        ui->listWidget->item(0)->setForeground(Qt::red);
+//        return;
+//    }
 
-//расчет
-    int sum {0}; //количество свободного места для данной детали на складе
-    for(unsigned int i = 0; i < cells_number; i++)
-        if(wh[0][i].quantity == 0 || QString::fromStdString(wh[0][i].item_code) == detail_code)
-            sum+= wh[0][i].volume - wh[0][i].quantity;
+////расчет
+//    int sum {0}; //количество свободного места для данной детали на складе
+//    for(unsigned int i = 0; i < cells_number; i++)
+//        if(wh[0][i].quantity == 0 || QString::fromStdString(wh[0][i].item_code) == detail_code)
+//            sum+= wh[0][i].volume - wh[0][i].quantity;
 
-    if(sum < detail_quantity)
-    {
-        ui->listWidget->addItem("Не достаточно места на складе");
-        ui->listWidget->item(0)->setForeground(Qt::red);
-        return;
-    }
-    // добавление к деталям имеющимся на складе
-    for(unsigned int i = 0; i < cells_number; i++)
-    {
-        if(QString::fromStdString(wh[0][i].item_code) == detail_code && wh[0][i].volume - wh[0][i].quantity < 100)
-        {
-            int diff = wh[0][i].volume - wh[0][i].quantity;
-            if(detail_quantity > diff)
-            {
-                detail_quantity-=diff;
-                wh[0][i].quantity +=diff;
-                continue;
-            }
-            if(detail_quantity <= diff)
-            {
-                wh[0][i].quantity +=detail_quantity;
-                detail_quantity=0;
+//    if(sum < detail_quantity)
+//    {
+//        ui->listWidget->addItem("Не достаточно места на складе");
+//        ui->listWidget->item(0)->setForeground(Qt::red);
+//        return;
+//    }
+//    // добавление к деталям имеющимся на складе
+//    for(unsigned int i = 0; i < cells_number; i++)
+//    {
+//        if(QString::fromStdString(wh[0][i].item_code) == detail_code && wh[0][i].volume - wh[0][i].quantity < 100)
+//        {
+//            int diff = wh[0][i].volume - wh[0][i].quantity;
+//            if(detail_quantity > diff)
+//            {
+//                detail_quantity-=diff;
+//                wh[0][i].quantity +=diff;
+//                continue;
+//            }
+//            if(detail_quantity <= diff)
+//            {
+//                wh[0][i].quantity +=detail_quantity;
+//                detail_quantity=0;
 
-                break;
-            }
-        }
-    }
-    // добавление деталей в пустые ячейки
-    if(detail_quantity > 0)
-    {
-        for(unsigned int i = 0; i < cells_number; i++)
-        {
-            if((wh[0][i].volume - wh[0][i].quantity) == 100)
-            {
-                int diff = wh[0][i].volume - wh[0][i].quantity;
-                if(detail_quantity > diff)
-                {
-                    detail_quantity-=diff;
-                    wh[0][i].quantity +=diff;
-                    wh[0][i].item_code = detail_code.toStdString();
-                    continue;
-                }
-                if(detail_quantity <= diff)
-                {
-                    wh[0][i].quantity +=detail_quantity;
-                    detail_quantity = 0;
+//                break;
+//            }
+//        }
+//    }
+//    // добавление деталей в пустые ячейки
+//    if(detail_quantity > 0)
+//    {
+//        for(unsigned int i = 0; i < cells_number; i++)
+//        {
+//            if((wh[0][i].volume - wh[0][i].quantity) == 100)
+//            {
+//                int diff = wh[0][i].volume - wh[0][i].quantity;
+//                if(detail_quantity > diff)
+//                {
+//                    detail_quantity-=diff;
+//                    wh[0][i].quantity +=diff;
+//                    wh[0][i].item_code = detail_code.toStdString();
+//                    continue;
+//                }
+//                if(detail_quantity <= diff)
+//                {
+//                    wh[0][i].quantity +=detail_quantity;
+//                    detail_quantity = 0;
 
-                    wh[0][i].item_code = detail_code.toStdString();
-                    break;
-                }
-            }
-        }
-    }
+//                    wh[0][i].item_code = detail_code.toStdString();
+//                    break;
+//                }
+//            }
+//        }
+//    }
 
-
+    int err = wh->add(ui);
+    if(err != 0) return;
     MainWindow::on_pushButton_show_clicked();
 }
 
 
 void MainWindow::on_pushButton_delete_clicked()
 {
-    ui->listWidget->clear();
-    ui->tableView->setModel(NULL);
+//    ui->listWidget->clear();
+//    ui->tableView->setModel(NULL);
 
-    QString detail_code = ui->lineEdit->text();
-    QString str_quantity = ui->lineEdit_2->text();
-    int detail_quantity = str_quantity.toInt();
+//    QString detail_code = ui->lineEdit->text();
+//    QString str_quantity = ui->lineEdit_2->text();
+//    int detail_quantity = str_quantity.toInt();
 
-    if(detail_code == "" || str_quantity == "")
-    {
-        ui->listWidget->addItem("Деталь или количество не заполнены");
-        ui->listWidget->item(0)->setForeground(Qt::red);
-        return;
-    }
+//    if(detail_code == "" || str_quantity == "")
+//    {
+//        ui->listWidget->addItem("Деталь или количество не заполнены");
+//        ui->listWidget->item(0)->setForeground(Qt::red);
+//        return;
+//    }
 
-    if(detail_quantity == 0)
-    {
-        ui->listWidget->addItem("Ошибка в количестве");
-        ui->listWidget->item(0)->setForeground(Qt::red);
-        return;
-    }
-//расчет
-    int sum {0}; //количество штук для данной детали на складе
-    for(unsigned int i = 0; i < cells_number; i++)
-        if(QString::fromStdString(wh[0][i].item_code) == detail_code)
-            sum+= wh[0][i].quantity;
+//    if(detail_quantity == 0)
+//    {
+//        ui->listWidget->addItem("Ошибка в количестве");
+//        ui->listWidget->item(0)->setForeground(Qt::red);
+//        return;
+//    }
+////расчет
+//    int sum {0}; //количество штук для данной детали на складе
+//    for(unsigned int i = 0; i < cells_number; i++)
+//        if(QString::fromStdString(wh[0][i].item_code) == detail_code)
+//            sum+= wh[0][i].quantity;
 
-    if(sum < detail_quantity && sum != 0)
-    {
-        ui->listWidget->addItem("Не достаточно деталей на складе");
-        ui->listWidget->item(0)->setForeground(Qt::red);
-        return;
-    } else if(sum == 0)
-    {
-        ui->listWidget->addItem("Детали нет на складе");
-        ui->listWidget->item(0)->setForeground(Qt::red);
-        return;
-    }
+//    if(sum < detail_quantity && sum != 0)
+//    {
+//        ui->listWidget->addItem("Не достаточно деталей на складе");
+//        ui->listWidget->item(0)->setForeground(Qt::red);
+//        return;
+//    } else if(sum == 0)
+//    {
+//        ui->listWidget->addItem("Детали нет на складе");
+//        ui->listWidget->item(0)->setForeground(Qt::red);
+//        return;
+//    }
 
 
-    // удаление деталей имеющихся на складе
-    for(unsigned int i = 0; i < cells_number; i++)
-    {
-        if(QString::fromStdString(wh[0][i].item_code) == detail_code)
-        {
-            int diff = wh[0][i].quantity;
-            if(detail_quantity > diff)
-            {
-                wh[0][i].quantity = 0;
-                detail_quantity-=diff;
-                wh[0][i].item_code.clear();
-                continue;
-            }
-            if(detail_quantity <= diff)
-            {
-                if(detail_quantity == diff) wh[0][i].item_code.clear();
-                wh[0][i].quantity -= detail_quantity;
-                detail_quantity=0;
+//    // удаление деталей имеющихся на складе
+//    for(unsigned int i = 0; i < cells_number; i++)
+//    {
+//        if(QString::fromStdString(wh[0][i].item_code) == detail_code)
+//        {
+//            int diff = wh[0][i].quantity;
+//            if(detail_quantity > diff)
+//            {
+//                wh[0][i].quantity = 0;
+//                detail_quantity-=diff;
+//                wh[0][i].item_code.clear();
+//                continue;
+//            }
+//            if(detail_quantity <= diff)
+//            {
+//                if(detail_quantity == diff) wh[0][i].item_code.clear();
+//                wh[0][i].quantity -= detail_quantity;
+//                detail_quantity=0;
 
-                break;
-            }
-        }
-    }
+//                break;
+//            }
+//        }
+//    }
+    int err = wh->del(ui);
+    if(err != 0) return;
     MainWindow::on_pushButton_show_clicked();
 }
 
