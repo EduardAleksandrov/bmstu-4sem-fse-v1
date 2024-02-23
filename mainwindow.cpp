@@ -25,31 +25,32 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_add_clicked()
 {
-//    QString name = ui->lineEdit->text();
-//    ui->lineEdit->setText("");
-//    if(name == "") ui->listWidget->addItem("empty line");
-//    qDebug() << "hello to terminal";
-//    qDebug() << name.toInt();
+/*  //Пример
+    QString name = ui->lineEdit->text();
+    ui->lineEdit->setText("");
+    if(name == "") ui->listWidget->addItem("empty line");
+    qDebug() << "hello to terminal";
+    qDebug() << name.toInt();
 
-//    QStandardItemModel* model=  new QStandardItemModel();// 3 строки, 2 столбца
-//    model->setRowCount(3);
-//    model->setColumnCount(2);
+    QStandardItemModel* model=  new QStandardItemModel();// 3 строки, 2 столбца
+    model->setRowCount(3);
+    model->setColumnCount(2);
 
-//    model->setItem(0, 0, new QStandardItem("Tom"));
-//    model->setItem(0, 1, new QStandardItem("39"));
-//    model->setItem(1, 0, new QStandardItem("Bob"));
-//    model->setItem(1, 1, new QStandardItem("43"));
-//    model->setItem(2, 0, new QStandardItem("Sam"));
-//    model->setItem(2, 1, new QStandardItem("28"));
+    model->setItem(0, 0, new QStandardItem("Tom"));
+    model->setItem(0, 1, new QStandardItem("39"));
+    model->setItem(1, 0, new QStandardItem("Bob"));
+    model->setItem(1, 1, new QStandardItem("43"));
+    model->setItem(2, 0, new QStandardItem("Sam"));
+    model->setItem(2, 1, new QStandardItem("28"));
 
-//    // установка заголовков таблицы
-//    model->setHeaderData(0, Qt::Horizontal, "Name");
-//    model->setHeaderData(1, Qt::Horizontal, "Age");
+    // установка заголовков таблицы
+    model->setHeaderData(0, Qt::Horizontal, "Name");
+    model->setHeaderData(1, Qt::Horizontal, "Age");
 
-//    ui->tableView->setModel(model);
-////    ui->tableView->sortByColumn(1);
-////    model->clear();
-
+    ui->tableView->setModel(model);
+//    ui->tableView->sortByColumn(1);
+//    model->clear();
+*/
     ui->listWidget->clear();
     ui->tableView->setModel(NULL);
 
@@ -57,15 +58,17 @@ void MainWindow::on_pushButton_add_clicked()
     QString str_quantity = ui->lineEdit_2->text();
     int detail_quantity = str_quantity.toInt();
 
-    if(detail_quantity == 0)
-    {
-        ui->listWidget->addItem("Ошибка в количестве");
-        return;
-    }
-
     if(detail_code == "" || str_quantity == "")
     {
         ui->listWidget->addItem("Деталь или количество не заполнены");
+        ui->listWidget->item(0)->setForeground(Qt::red);
+        return;
+    }
+
+    if(detail_quantity == 0)
+    {
+        ui->listWidget->addItem("Ошибка в количестве");
+        ui->listWidget->item(0)->setForeground(Qt::red);
         return;
     }
 
@@ -78,6 +81,7 @@ void MainWindow::on_pushButton_add_clicked()
     if(sum < detail_quantity)
     {
         ui->listWidget->addItem("Не достаточно места на складе");
+        ui->listWidget->item(0)->setForeground(Qt::red);
         return;
     }
     // добавление к деталям имеющимся на складе
@@ -129,7 +133,7 @@ void MainWindow::on_pushButton_add_clicked()
     }
 
 
-
+    MainWindow::on_pushButton_show_clicked();
 }
 
 
@@ -142,15 +146,17 @@ void MainWindow::on_pushButton_delete_clicked()
     QString str_quantity = ui->lineEdit_2->text();
     int detail_quantity = str_quantity.toInt();
 
-    if(detail_quantity == 0)
-    {
-        ui->listWidget->addItem("Ошибка в количестве");
-        return;
-    }
-
     if(detail_code == "" || str_quantity == "")
     {
         ui->listWidget->addItem("Деталь или количество не заполнены");
+        ui->listWidget->item(0)->setForeground(Qt::red);
+        return;
+    }
+
+    if(detail_quantity == 0)
+    {
+        ui->listWidget->addItem("Ошибка в количестве");
+        ui->listWidget->item(0)->setForeground(Qt::red);
         return;
     }
 //расчет
@@ -159,11 +165,18 @@ void MainWindow::on_pushButton_delete_clicked()
         if(QString::fromStdString(wh[0][i].item_code) == detail_code)
             sum+= wh[0][i].quantity;
 
-    if(sum < detail_quantity)
+    if(sum < detail_quantity && sum != 0)
     {
         ui->listWidget->addItem("Не достаточно деталей на складе");
+        ui->listWidget->item(0)->setForeground(Qt::red);
+        return;
+    } else if(sum == 0)
+    {
+        ui->listWidget->addItem("Детали нет на складе");
+        ui->listWidget->item(0)->setForeground(Qt::red);
         return;
     }
+
 
     // удаление деталей имеющихся на складе
     for(unsigned int i = 0; i < cells_number; i++)
@@ -188,6 +201,7 @@ void MainWindow::on_pushButton_delete_clicked()
             }
         }
     }
+    MainWindow::on_pushButton_show_clicked();
 }
 
 
@@ -202,6 +216,8 @@ void MainWindow::on_pushButton_clear_clicked()
 
 void MainWindow::on_pushButton_show_clicked()
 {
+    ui->listWidget->clear();
+
     QStandardItemModel* model=  new QStandardItemModel();
     model->setRowCount(wh->get_size());
     model->setColumnCount(4);
@@ -219,6 +235,9 @@ void MainWindow::on_pushButton_show_clicked()
         model->setItem(i, 2, new QStandardItem(QString::number(wh[0][i].quantity)));
         model->setItem(i, 3, new QStandardItem(QString::number(wh[0][i].volume)));
     }
+
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch); //ширина
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers); //запрет редактирования
 
     ui->tableView->setModel(model);
 }

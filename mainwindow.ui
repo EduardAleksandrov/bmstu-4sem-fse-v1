@@ -60,7 +60,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Show</string>
+     <string>Show all</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit">
