@@ -9,7 +9,7 @@ Warehouse::Warehouse(QObject* parent): QObject(parent)
 
     Cell* p[] {&i1, &i2, &i3, &i4};
 
-    for(unsigned int i = 0; i < 20; i++)
+    for(unsigned int i = 0; i < cells_number; i++)
     {
         std::string address = "if" + std::to_string(500+i);
         cells.push_back({address, "", 0, 100});
@@ -17,7 +17,7 @@ Warehouse::Warehouse(QObject* parent): QObject(parent)
 
     for(unsigned int i = 0; i < sizeof(p)/sizeof(*p); i++)
     {
-        for(unsigned int j = 0; j < 20; j++)
+        for(unsigned int j = 0; j < cells_number; j++)
         {
             if(cells[j].cell_address == (*p[i]).cell_address)
             {

@@ -4,6 +4,7 @@
 #include <QObject>
 #include "item.h"
 #include <vector>
+#include "constants.h"
 
 class Warehouse: public QObject
 {

@@ -49,13 +49,145 @@ void MainWindow::on_pushButton_add_clicked()
 //    ui->tableView->setModel(model);
 ////    ui->tableView->sortByColumn(1);
 ////    model->clear();
+
+    ui->listWidget->clear();
+    ui->tableView->setModel(NULL);
+
+    QString detail_code = ui->lineEdit->text();
+    QString str_quantity = ui->lineEdit_2->text();
+    int detail_quantity = str_quantity.toInt();
+
+    if(detail_quantity == 0)
+    {
+        ui->listWidget->addItem("Ошибка в количестве");
+        return;
+    }
+
+    if(detail_code == "" || str_quantity == "")
+    {
+        ui->listWidget->addItem("Деталь или количество не заполнены");
+        return;
+    }
+
+//расчет
+    int sum {0}; //количество свободного места для данной детали на складе
+    for(unsigned int i = 0; i < cells_number; i++)
+        if(wh[0][i].quantity == 0 || QString::fromStdString(wh[0][i].item_code) == detail_code)
+            sum+= wh[0][i].volume - wh[0][i].quantity;
+
+    if(sum < detail_quantity)
+    {
+        ui->listWidget->addItem("Не достаточно места на складе");
+        return;
+    }
+    // добавление к деталям имеющимся на складе
+    for(unsigned int i = 0; i < cells_number; i++)
+    {
+        if(QString::fromStdString(wh[0][i].item_code) == detail_code && wh[0][i].volume - wh[0][i].quantity < 100)
+        {
+            int diff = wh[0][i].volume - wh[0][i].quantity;
+            if(detail_quantity > diff)
+            {
+                detail_quantity-=diff;
+                wh[0][i].quantity +=diff;
+                continue;
+            }
+            if(detail_quantity <= diff)
+            {
+                wh[0][i].quantity +=detail_quantity;
+                detail_quantity=0;
+
+                break;
+            }
+        }
+    }
+    // добавление деталей в пустые ячейки
+    if(detail_quantity > 0)
+    {
+        for(unsigned int i = 0; i < cells_number; i++)
+        {
+            if((wh[0][i].volume - wh[0][i].quantity) == 100)
+            {
+                int diff = wh[0][i].volume - wh[0][i].quantity;
+                if(detail_quantity > diff)
+                {
+                    detail_quantity-=diff;
+                    wh[0][i].quantity +=diff;
+                    wh[0][i].item_code = detail_code.toStdString();
+                    continue;
+                }
+                if(detail_quantity <= diff)
+                {
+                    wh[0][i].quantity +=detail_quantity;
+                    detail_quantity = 0;
+
+                    wh[0][i].item_code = detail_code.toStdString();
+                    break;
+                }
+            }
+        }
+    }
+
+
+
 }
 
 
 void MainWindow::on_pushButton_delete_clicked()
 {
+    ui->listWidget->clear();
+    ui->tableView->setModel(NULL);
 
+    QString detail_code = ui->lineEdit->text();
+    QString str_quantity = ui->lineEdit_2->text();
+    int detail_quantity = str_quantity.toInt();
 
+    if(detail_quantity == 0)
+    {
+        ui->listWidget->addItem("Ошибка в количестве");
+        return;
+    }
+
+    if(detail_code == "" || str_quantity == "")
+    {
+        ui->listWidget->addItem("Деталь или количество не заполнены");
+        return;
+    }
+//расчет
+    int sum {0}; //количество штук для данной детали на складе
+    for(unsigned int i = 0; i < cells_number; i++)
+        if(QString::fromStdString(wh[0][i].item_code) == detail_code)
+            sum+= wh[0][i].quantity;
+
+    if(sum < detail_quantity)
+    {
+        ui->listWidget->addItem("Не достаточно деталей на складе");
+        return;
+    }
+
+    // удаление деталей имеющихся на складе
+    for(unsigned int i = 0; i < cells_number; i++)
+    {
+        if(QString::fromStdString(wh[0][i].item_code) == detail_code)
+        {
+            int diff = wh[0][i].quantity;
+            if(detail_quantity > diff)
+            {
+                wh[0][i].quantity = 0;
+                detail_quantity-=diff;
+                wh[0][i].item_code.clear();
+                continue;
+            }
+            if(detail_quantity <= diff)
+            {
+                if(detail_quantity == diff) wh[0][i].item_code.clear();
+                wh[0][i].quantity -= detail_quantity;
+                detail_quantity=0;
+
+                break;
+            }
+        }
+    }
 }
 
 
@@ -75,8 +207,8 @@ void MainWindow::on_pushButton_show_clicked()
     model->setColumnCount(4);
 
     // установка заголовков таблицы
-    model->setHeaderData(0, Qt::Horizontal, "Код детали");
-    model->setHeaderData(1, Qt::Horizontal, "Код ячейки");
+    model->setHeaderData(0, Qt::Horizontal, "Код ячейки");
+    model->setHeaderData(1, Qt::Horizontal, "Код детали");
     model->setHeaderData(2, Qt::Horizontal, "Количество в ячейке");
     model->setHeaderData(3, Qt::Horizontal, "Объем ячейки");
 

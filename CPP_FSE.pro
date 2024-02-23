@@ -14,6 +14,7 @@ SOURCES += \
     warehouse.cpp
 
 HEADERS += \
+    constants.h \
     item.h \
     mainwindow.h \
     warehouse.h
