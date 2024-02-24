@@ -14,6 +14,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     wh = new Warehouse{this};
+
+    ui->radioButton->setChecked(true);
+    ui->radioButton_3->setChecked(true);
 }
 
 MainWindow::~MainWindow()
@@ -237,6 +240,148 @@ void MainWindow::on_pushButton_show_clicked()
         model->setItem(i, 1, new QStandardItem(QString::fromStdString(wh[0][i].item_code)));
         model->setItem(i, 2, new QStandardItem(QString::number(wh[0][i].quantity)));
         model->setItem(i, 3, new QStandardItem(QString::number(wh[0][i].volume)));
+    }
+
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch); //ширина
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers); //запрет редактирования
+
+    ui->tableView->setModel(model);
+}
+
+//фильтр по коду детали
+void MainWindow::on_pushButton_1_clicked()
+{
+    ui->listWidget->clear();
+    ui->tableView->setModel(NULL);
+
+    QString detail_code = ui->lineEdit->text();
+
+    if(detail_code == "")
+    {
+        ui->listWidget->addItem("Деталь не заполнена");
+        ui->listWidget->item(0)->setForeground(Qt::red);
+        return;
+    }
+
+    std::vector <Cell> result {};
+    wh->detail_code_all(result, detail_code);
+
+    QStandardItemModel* model=  new QStandardItemModel();
+    model->setRowCount(result.size());
+    model->setColumnCount(4);
+
+    // установка заголовков таблицы
+    model->setHeaderData(0, Qt::Horizontal, "Код ячейки");
+    model->setHeaderData(1, Qt::Horizontal, "Код детали");
+    model->setHeaderData(2, Qt::Horizontal, "Количество в ячейке");
+    model->setHeaderData(3, Qt::Horizontal, "Объем ячейки");
+
+    for(unsigned int i = 0; i < result.size(); i++)
+    {
+        model->setItem(i, 0, new QStandardItem(QString::fromStdString(result[i].cell_address)));
+        model->setItem(i, 1, new QStandardItem(QString::fromStdString(result[i].item_code)));
+        model->setItem(i, 2, new QStandardItem(QString::number(result[i].quantity)));
+        model->setItem(i, 3, new QStandardItem(QString::number(result[i].volume)));
+    }
+
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch); //ширина
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers); //запрет редактирования
+
+    ui->tableView->setModel(model);
+}
+
+//суммарное количество по коду детали
+void MainWindow::on_pushButton_2_clicked()
+{
+    ui->listWidget->clear();
+    ui->tableView->setModel(NULL);
+
+    QString detail_code = ui->lineEdit->text();
+
+    if(detail_code == "")
+    {
+        ui->listWidget->addItem("Деталь не заполнена");
+        ui->listWidget->item(0)->setForeground(Qt::red);
+        return;
+    }
+
+    std::vector <Cell> result {};
+    wh->detail_code_sum(result, detail_code);
+
+    QStandardItemModel* model=  new QStandardItemModel();
+    model->setRowCount(result.size());
+    model->setColumnCount(2);
+
+    // установка заголовков таблицы
+    model->setHeaderData(0, Qt::Horizontal, "Код детали");
+    model->setHeaderData(1, Qt::Horizontal, "Всего");
+
+    for(unsigned int i = 0; i < result.size(); i++)
+    {
+        model->setItem(i, 0, new QStandardItem(QString::fromStdString(result[i].item_code)));
+        model->setItem(i, 1, new QStandardItem(QString::number(result[i].quantity)));
+    }
+
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch); //ширина
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers); //запрет редактирования
+
+    ui->tableView->setModel(model);
+}
+
+//суммарное количество по каждому коду
+void MainWindow::on_pushButton_4_clicked()
+{
+    ui->listWidget->clear();
+    ui->tableView->setModel(NULL);
+
+    std::vector <Cell> result {};
+    wh->each_detail_code_sum(result);
+
+    QStandardItemModel* model=  new QStandardItemModel();
+    model->setRowCount(result.size());
+    model->setColumnCount(2);
+
+    // установка заголовков таблицы
+    model->setHeaderData(0, Qt::Horizontal, "Код детали");
+    model->setHeaderData(1, Qt::Horizontal, "Всего");
+
+    for(unsigned int i = 0; i < result.size(); i++)
+    {
+        model->setItem(i, 0, new QStandardItem(QString::fromStdString(result[i].item_code)));
+        model->setItem(i, 1, new QStandardItem(QString::number(result[i].quantity)));
+    }
+
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch); //ширина
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers); //запрет редактирования
+
+    ui->tableView->setModel(model);
+}
+
+//сортировка по убыванию адреса ячейки
+void MainWindow::on_pushButton_5_clicked()
+{
+    ui->listWidget->clear();
+    bool isChecked = ui->radioButton->isChecked(); //если выбрана, то сортировка по детали, иначе по адресу ячейки
+    bool isChecked_desc = ui->radioButton_3->isChecked(); // если выбрана, то по убыванию
+    std::vector <Cell*> result {};
+    wh->sort_cell_address(result, isChecked, isChecked_desc);
+
+    QStandardItemModel* model=  new QStandardItemModel();
+    model->setRowCount(result.size());
+    model->setColumnCount(4);
+
+    // установка заголовков таблицы
+    model->setHeaderData(0, Qt::Horizontal, "Код ячейки");
+    model->setHeaderData(1, Qt::Horizontal, "Код детали");
+    model->setHeaderData(2, Qt::Horizontal, "Количество в ячейке");
+    model->setHeaderData(3, Qt::Horizontal, "Объем ячейки");
+
+    for(unsigned int i = 0; i < result.size(); i++)
+    {
+        model->setItem(i, 0, new QStandardItem(QString::fromStdString(result[i]->cell_address)));
+        model->setItem(i, 1, new QStandardItem(QString::fromStdString(result[i]->item_code)));
+        model->setItem(i, 2, new QStandardItem(QString::number(result[i]->quantity)));
+        model->setItem(i, 3, new QStandardItem(QString::number(result[i]->volume)));
     }
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch); //ширина

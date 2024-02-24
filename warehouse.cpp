@@ -190,3 +190,95 @@ int Warehouse::del(Ui::MainWindow* ui)
     }
     return 0;
 }
+//фильтр по коду детали
+void Warehouse::detail_code_all(std::vector<Cell>& result, QString detail_code)
+{
+    for(unsigned int i = 0; i < cells.size(); i++)
+    {
+        if(cells[i].item_code == detail_code.toStdString())
+        {
+            result.push_back(cells[i]);
+        }
+    }
+}
+//суммарное количество по коду детали
+void Warehouse::detail_code_sum(std::vector<Cell>& result, QString detail_code)
+{
+    int sum {0};
+    for(unsigned int i = 0; i < cells.size(); i++)
+    {
+        if(cells[i].item_code == detail_code.toStdString())
+        {
+            sum+=cells[i].quantity;
+        }
+    }
+    result.push_back({"",detail_code.toStdString(),sum,0});
+}
+//суммарное количество по каждому коду детали
+void Warehouse::each_detail_code_sum(std::vector<Cell>& result)
+{
+    std::vector <bool> check (cells.size(), 0);
+    unsigned int n = 0;
+    while(n < cells.size())
+    {
+        int sum = 0;
+        if(check[n] == 1)
+        {
+            n++;
+            continue;
+        }
+        for(unsigned int i = n; i < cells.size(); i++)
+        {
+            if(cells[i].item_code == cells[n].item_code && check[i] == 0)
+            {
+                sum += cells[i].quantity;
+                check[i] = 1;
+            }
+        }
+        if(sum != 0) result.push_back({"",cells[n].item_code,sum,0});
+        n++;
+    }
+}
+// сортировка по убыванию адреса ячейки
+void Warehouse::sort_cell_address(std::vector<Cell*>& result, bool isChecked, bool isChecked_desc)
+{
+    for(unsigned int i = 0; i < cells.size(); i++)
+    {
+        result.push_back(&cells[i]);
+    }
+    Cell* temp;
+    for(unsigned long int i = 0; i < cells.size()-1; i++)
+    {
+        for(unsigned long int j = i + 1; j < cells.size(); j++)
+        {
+            if(isChecked_desc == true)
+            {
+                if(result[i]->cell_address < result[j]->cell_address && isChecked == false)
+                {
+                    temp = result[i];
+                    result[i] = result[j];
+                    result[j] = temp;
+                }
+                if(result[i]->item_code < result[j]->item_code && isChecked == true)
+                {
+                    temp = result[i];
+                    result[i] = result[j];
+                    result[j] = temp;
+                }
+            } else {
+                if(result[i]->cell_address > result[j]->cell_address && isChecked == false)
+                {
+                    temp = result[i];
+                    result[i] = result[j];
+                    result[j] = temp;
+                }
+                if(result[i]->item_code > result[j]->item_code && isChecked == true)
+                {
+                    temp = result[i];
+                    result[i] = result[j];
+                    result[j] = temp;
+                }
+            }
+        }
+    }
+}

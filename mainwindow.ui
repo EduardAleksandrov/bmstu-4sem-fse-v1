@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>795</width>
-    <height>600</height>
+    <width>790</width>
+    <height>630</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>360</y>
+      <y>390</y>
       <width>751</width>
       <height>191</height>
      </rect>
@@ -34,7 +34,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Add</string>
+     <string>Добавить</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_delete">
@@ -47,7 +47,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Delete</string>
+     <string>Удалить</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_show">
@@ -55,12 +55,12 @@
      <rect>
       <x>230</x>
       <y>30</y>
-      <width>71</width>
+      <width>101</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Show all</string>
+     <string>Показать все</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit">
@@ -87,20 +87,20 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>260</y>
-      <width>91</width>
+      <y>290</y>
+      <width>121</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Clear</string>
+     <string>Очистить</string>
     </property>
    </widget>
    <widget class="QListWidget" name="listWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>310</y>
+      <y>340</y>
       <width>751</width>
       <height>41</height>
      </rect>
@@ -132,7 +132,7 @@
      <string>Количество</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pushButton_1">
     <property name="geometry">
      <rect>
       <x>330</x>
@@ -175,14 +175,78 @@
     <property name="geometry">
      <rect>
       <x>330</x>
-      <y>260</y>
-      <width>321</width>
-      <height>31</height>
+      <y>270</y>
+      <width>111</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
-     <string>Сортировка по возрастанию адреса ячейки</string>
+     <string>Сортировка</string>
     </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButton">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>270</y>
+      <width>112</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Детали</string>
+    </property>
+    <attribute name="buttonGroup">
+     <string notr="true">buttonGroup</string>
+    </attribute>
+   </widget>
+   <widget class="QRadioButton" name="radioButton_2">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>300</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Код ячейки</string>
+    </property>
+    <attribute name="buttonGroup">
+     <string notr="true">buttonGroup</string>
+    </attribute>
+   </widget>
+   <widget class="QRadioButton" name="radioButton_3">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>270</y>
+      <width>121</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>По убыванию</string>
+    </property>
+    <attribute name="buttonGroup">
+     <string notr="true">buttonGroup_2</string>
+    </attribute>
+   </widget>
+   <widget class="QRadioButton" name="radioButton_4">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>300</y>
+      <width>141</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>По возрастанию</string>
+    </property>
+    <attribute name="buttonGroup">
+     <string notr="true">buttonGroup_2</string>
+    </attribute>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -190,7 +254,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>795</width>
+     <width>790</width>
      <height>22</height>
     </rect>
    </property>
@@ -199,4 +263,8 @@
  </widget>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_2"/>
+ </buttongroups>
 </ui>

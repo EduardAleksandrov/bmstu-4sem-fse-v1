@@ -21,6 +21,14 @@ public:
     int add(Ui::MainWindow* ui);
 
     int del(Ui::MainWindow* ui);
+
+    void detail_code_all(std::vector<Cell>& result, QString detail_code);
+
+    void detail_code_sum(std::vector<Cell>& result, QString detail_code);
+
+    void each_detail_code_sum(std::vector<Cell>& result);
+
+    void sort_cell_address(std::vector<Cell*>& result, bool isChecked, bool isChecked_desc);
 public slots:
 
 private:
