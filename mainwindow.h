@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "warehouse.h"
+#include "ddialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -34,8 +35,13 @@ private slots:
 
     void on_pushButton_5_clicked();
 
+    void on_checkBox_stateChanged(int arg1);
+
+    void on_pushButton_diagram_clicked();
+
 private:
     Ui::MainWindow *ui;
     Warehouse *wh;
+    DDialog *ddialog;
 };
 #endif // MAINWINDOW_H

@@ -23,6 +23,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete wh;
+    delete ddialog;
 }
 
 
@@ -35,7 +36,7 @@ void MainWindow::on_pushButton_add_clicked()
     qDebug() << "hello to terminal";
     qDebug() << name.toInt();
 
-    QStandardItemModel* model=  new QStandardItemModel();// 3 строки, 2 столбца
+    QStandardItemModel* model = new QStandardItemModel();// 3 строки, 2 столбца
     model->setRowCount(3);
     model->setColumnCount(2);
 
@@ -54,86 +55,6 @@ void MainWindow::on_pushButton_add_clicked()
 //    ui->tableView->sortByColumn(1);
 //    model->clear();
 */
-//    ui->listWidget->clear();
-//    ui->tableView->setModel(NULL);
-
-//    QString detail_code = ui->lineEdit->text();
-//    QString str_quantity = ui->lineEdit_2->text();
-//    int detail_quantity = str_quantity.toInt();
-
-//    if(detail_code == "" || str_quantity == "")
-//    {
-//        ui->listWidget->addItem("Деталь или количество не заполнены");
-//        ui->listWidget->item(0)->setForeground(Qt::red);
-//        return;
-//    }
-
-//    if(detail_quantity == 0)
-//    {
-//        ui->listWidget->addItem("Ошибка в количестве");
-//        ui->listWidget->item(0)->setForeground(Qt::red);
-//        return;
-//    }
-
-////расчет
-//    int sum {0}; //количество свободного места для данной детали на складе
-//    for(unsigned int i = 0; i < cells_number; i++)
-//        if(wh[0][i].quantity == 0 || QString::fromStdString(wh[0][i].item_code) == detail_code)
-//            sum+= wh[0][i].volume - wh[0][i].quantity;
-
-//    if(sum < detail_quantity)
-//    {
-//        ui->listWidget->addItem("Не достаточно места на складе");
-//        ui->listWidget->item(0)->setForeground(Qt::red);
-//        return;
-//    }
-//    // добавление к деталям имеющимся на складе
-//    for(unsigned int i = 0; i < cells_number; i++)
-//    {
-//        if(QString::fromStdString(wh[0][i].item_code) == detail_code && wh[0][i].volume - wh[0][i].quantity < 100)
-//        {
-//            int diff = wh[0][i].volume - wh[0][i].quantity;
-//            if(detail_quantity > diff)
-//            {
-//                detail_quantity-=diff;
-//                wh[0][i].quantity +=diff;
-//                continue;
-//            }
-//            if(detail_quantity <= diff)
-//            {
-//                wh[0][i].quantity +=detail_quantity;
-//                detail_quantity=0;
-
-//                break;
-//            }
-//        }
-//    }
-//    // добавление деталей в пустые ячейки
-//    if(detail_quantity > 0)
-//    {
-//        for(unsigned int i = 0; i < cells_number; i++)
-//        {
-//            if((wh[0][i].volume - wh[0][i].quantity) == 100)
-//            {
-//                int diff = wh[0][i].volume - wh[0][i].quantity;
-//                if(detail_quantity > diff)
-//                {
-//                    detail_quantity-=diff;
-//                    wh[0][i].quantity +=diff;
-//                    wh[0][i].item_code = detail_code.toStdString();
-//                    continue;
-//                }
-//                if(detail_quantity <= diff)
-//                {
-//                    wh[0][i].quantity +=detail_quantity;
-//                    detail_quantity = 0;
-
-//                    wh[0][i].item_code = detail_code.toStdString();
-//                    break;
-//                }
-//            }
-//        }
-//    }
 
     int err = wh->add(ui);
     if(err != 0) return;
@@ -143,68 +64,6 @@ void MainWindow::on_pushButton_add_clicked()
 
 void MainWindow::on_pushButton_delete_clicked()
 {
-//    ui->listWidget->clear();
-//    ui->tableView->setModel(NULL);
-
-//    QString detail_code = ui->lineEdit->text();
-//    QString str_quantity = ui->lineEdit_2->text();
-//    int detail_quantity = str_quantity.toInt();
-
-//    if(detail_code == "" || str_quantity == "")
-//    {
-//        ui->listWidget->addItem("Деталь или количество не заполнены");
-//        ui->listWidget->item(0)->setForeground(Qt::red);
-//        return;
-//    }
-
-//    if(detail_quantity == 0)
-//    {
-//        ui->listWidget->addItem("Ошибка в количестве");
-//        ui->listWidget->item(0)->setForeground(Qt::red);
-//        return;
-//    }
-////расчет
-//    int sum {0}; //количество штук для данной детали на складе
-//    for(unsigned int i = 0; i < cells_number; i++)
-//        if(QString::fromStdString(wh[0][i].item_code) == detail_code)
-//            sum+= wh[0][i].quantity;
-
-//    if(sum < detail_quantity && sum != 0)
-//    {
-//        ui->listWidget->addItem("Не достаточно деталей на складе");
-//        ui->listWidget->item(0)->setForeground(Qt::red);
-//        return;
-//    } else if(sum == 0)
-//    {
-//        ui->listWidget->addItem("Детали нет на складе");
-//        ui->listWidget->item(0)->setForeground(Qt::red);
-//        return;
-//    }
-
-
-//    // удаление деталей имеющихся на складе
-//    for(unsigned int i = 0; i < cells_number; i++)
-//    {
-//        if(QString::fromStdString(wh[0][i].item_code) == detail_code)
-//        {
-//            int diff = wh[0][i].quantity;
-//            if(detail_quantity > diff)
-//            {
-//                wh[0][i].quantity = 0;
-//                detail_quantity-=diff;
-//                wh[0][i].item_code.clear();
-//                continue;
-//            }
-//            if(detail_quantity <= diff)
-//            {
-//                if(detail_quantity == diff) wh[0][i].item_code.clear();
-//                wh[0][i].quantity -= detail_quantity;
-//                detail_quantity=0;
-
-//                break;
-//            }
-//        }
-//    }
     int err = wh->del(ui);
     if(err != 0) return;
     MainWindow::on_pushButton_show_clicked();
@@ -224,15 +83,23 @@ void MainWindow::on_pushButton_show_clicked()
 {
     ui->listWidget->clear();
 
-    QStandardItemModel* model=  new QStandardItemModel();
+    QStandardItemModel* model = new QStandardItemModel();
     model->setRowCount(wh->get_size());
     model->setColumnCount(4);
 
     // установка заголовков таблицы
-    model->setHeaderData(0, Qt::Horizontal, "Код ячейки");
-    model->setHeaderData(1, Qt::Horizontal, "Код детали");
-    model->setHeaderData(2, Qt::Horizontal, "Количество в ячейке");
-    model->setHeaderData(3, Qt::Horizontal, "Объем ячейки");
+    if(ui->checkBox->isChecked())
+    {
+        model->setHeaderData(0, Qt::Horizontal, "Cell code");
+        model->setHeaderData(1, Qt::Horizontal, "Detail code");
+        model->setHeaderData(2, Qt::Horizontal, "Quantity per cell");
+        model->setHeaderData(3, Qt::Horizontal, "Cell volume");
+    } else {
+        model->setHeaderData(0, Qt::Horizontal, "Код ячейки");
+        model->setHeaderData(1, Qt::Horizontal, "Код детали");
+        model->setHeaderData(2, Qt::Horizontal, "Количество в ячейке");
+        model->setHeaderData(3, Qt::Horizontal, "Объем ячейки");
+    }
 
     for(int i = 0; i < wh->get_size(); i++)
     {
@@ -266,15 +133,23 @@ void MainWindow::on_pushButton_1_clicked()
     std::vector <Cell> result {};
     wh->detail_code_all(result, detail_code);
 
-    QStandardItemModel* model=  new QStandardItemModel();
+    QStandardItemModel* model = new QStandardItemModel();
     model->setRowCount(result.size());
     model->setColumnCount(4);
 
     // установка заголовков таблицы
-    model->setHeaderData(0, Qt::Horizontal, "Код ячейки");
-    model->setHeaderData(1, Qt::Horizontal, "Код детали");
-    model->setHeaderData(2, Qt::Horizontal, "Количество в ячейке");
-    model->setHeaderData(3, Qt::Horizontal, "Объем ячейки");
+    if(ui->checkBox->isChecked())
+    {
+        model->setHeaderData(0, Qt::Horizontal, "Cell code");
+        model->setHeaderData(1, Qt::Horizontal, "Detail code");
+        model->setHeaderData(2, Qt::Horizontal, "Quantity per cell");
+        model->setHeaderData(3, Qt::Horizontal, "Cell volume");
+    } else {
+        model->setHeaderData(0, Qt::Horizontal, "Код ячейки");
+        model->setHeaderData(1, Qt::Horizontal, "Код детали");
+        model->setHeaderData(2, Qt::Horizontal, "Количество в ячейке");
+        model->setHeaderData(3, Qt::Horizontal, "Объем ячейки");
+    }
 
     for(unsigned int i = 0; i < result.size(); i++)
     {
@@ -308,13 +183,19 @@ void MainWindow::on_pushButton_2_clicked()
     std::vector <Cell> result {};
     wh->detail_code_sum(result, detail_code);
 
-    QStandardItemModel* model=  new QStandardItemModel();
+    QStandardItemModel* model = new QStandardItemModel();
     model->setRowCount(result.size());
     model->setColumnCount(2);
 
     // установка заголовков таблицы
-    model->setHeaderData(0, Qt::Horizontal, "Код детали");
-    model->setHeaderData(1, Qt::Horizontal, "Всего");
+    if(ui->checkBox->isChecked())
+    {
+        model->setHeaderData(0, Qt::Horizontal, "Detail code");
+        model->setHeaderData(1, Qt::Horizontal, "Total");
+    } else {
+        model->setHeaderData(0, Qt::Horizontal, "Код детали");
+        model->setHeaderData(1, Qt::Horizontal, "Всего");
+    }
 
     for(unsigned int i = 0; i < result.size(); i++)
     {
@@ -337,13 +218,19 @@ void MainWindow::on_pushButton_4_clicked()
     std::vector <Cell> result {};
     wh->each_detail_code_sum(result);
 
-    QStandardItemModel* model=  new QStandardItemModel();
+    QStandardItemModel* model = new QStandardItemModel();
     model->setRowCount(result.size());
     model->setColumnCount(2);
 
     // установка заголовков таблицы
-    model->setHeaderData(0, Qt::Horizontal, "Код детали");
-    model->setHeaderData(1, Qt::Horizontal, "Всего");
+    if(ui->checkBox->isChecked())
+    {
+        model->setHeaderData(0, Qt::Horizontal, "Detail code");
+        model->setHeaderData(1, Qt::Horizontal, "Total");
+    } else {
+        model->setHeaderData(0, Qt::Horizontal, "Код детали");
+        model->setHeaderData(1, Qt::Horizontal, "Всего");
+    }
 
     for(unsigned int i = 0; i < result.size(); i++)
     {
@@ -366,15 +253,23 @@ void MainWindow::on_pushButton_5_clicked()
     std::vector <Cell*> result {};
     wh->sort_cell_address(result, isChecked, isChecked_desc);
 
-    QStandardItemModel* model=  new QStandardItemModel();
+    QStandardItemModel* model = new QStandardItemModel();
     model->setRowCount(result.size());
     model->setColumnCount(4);
 
     // установка заголовков таблицы
-    model->setHeaderData(0, Qt::Horizontal, "Код ячейки");
-    model->setHeaderData(1, Qt::Horizontal, "Код детали");
-    model->setHeaderData(2, Qt::Horizontal, "Количество в ячейке");
-    model->setHeaderData(3, Qt::Horizontal, "Объем ячейки");
+    if(ui->checkBox->isChecked())
+    {
+        model->setHeaderData(0, Qt::Horizontal, "Cell code");
+        model->setHeaderData(1, Qt::Horizontal, "Detail code");
+        model->setHeaderData(2, Qt::Horizontal, "Quantity per cell");
+        model->setHeaderData(3, Qt::Horizontal, "Cell volume");
+    } else {
+        model->setHeaderData(0, Qt::Horizontal, "Код ячейки");
+        model->setHeaderData(1, Qt::Horizontal, "Код детали");
+        model->setHeaderData(2, Qt::Horizontal, "Количество в ячейке");
+        model->setHeaderData(3, Qt::Horizontal, "Объем ячейки");
+    }
 
     for(unsigned int i = 0; i < result.size(); i++)
     {
@@ -388,5 +283,57 @@ void MainWindow::on_pushButton_5_clicked()
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers); //запрет редактирования
 
     ui->tableView->setModel(model);
+}
+
+
+void MainWindow::on_checkBox_stateChanged(int arg1)
+{
+    ui->listWidget->clear();
+    ui->tableView->setModel(NULL);
+
+    if(arg1 != 0)
+    {
+        ui->pushButton_add->setText("Add");
+        ui->pushButton_delete->setText("Delete");
+        ui->pushButton_show->setText("Show all");
+        ui->label->setText("Detail code");
+        ui->label_2->setText("Quantity");
+        ui->pushButton_clear->setText("Clear form");
+        ui->pushButton_1->setText("Filter by detail code");
+        ui->pushButton_2->setText("Total quantity by detail code");
+        ui->pushButton_4->setText("Total quantity for each code");
+        ui->pushButton_5->setText("Sort");
+        ui->radioButton->setText("Details");
+        ui->radioButton_2->setText("Cell code");
+        ui->radioButton_3->setText("Descending");
+        ui->radioButton_4->setText("Ascending");
+        ui->pushButton_diagram->setText("Warehouse loading");
+    } else {
+        ui->pushButton_add->setText("Добавить");
+        ui->pushButton_delete->setText("Удалить");
+        ui->pushButton_show->setText("Показать все");
+        ui->label->setText("Код детали");
+        ui->label_2->setText("Количество");
+        ui->pushButton_clear->setText("Очистить форму");
+        ui->pushButton_1->setText("Фильтр по коду детали");
+        ui->pushButton_2->setText("Суммарное количество по коду детали");
+        ui->pushButton_4->setText("Суммарное количество по каждому коду");
+        ui->pushButton_5->setText("Сортировка");
+        ui->radioButton->setText("Детали");
+        ui->radioButton_2->setText("Код ячейки");
+        ui->radioButton_3->setText("По убыванию");
+        ui->radioButton_4->setText("По возрастанию");
+        ui->pushButton_diagram->setText("Показать загрузку склада");
+    }
+}
+
+
+
+void MainWindow::on_pushButton_diagram_clicked()
+{
+    ddialog = new DDialog(this);
+    ddialog->show();
+    ddialog->show_diagram(wh, ui->checkBox->isChecked());
+
 }
 
