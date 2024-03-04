@@ -17,6 +17,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->radioButton->setChecked(true);
     ui->radioButton_3->setChecked(true);
+//таймер
+    ddialog = new DDialog(this, ui->checkBox->isChecked(), wh);
+
+    tmr = new QTimer(this); // Создаем объект класса QTimer и передаем адрес переменной
+    connect(tmr, SIGNAL(timeout()), this, SLOT(show_diagram())); // Подключаем сигнал таймера к нашему слоту
+    tmr->setInterval(1000); // Задаем интервал таймера
+    connect(ddialog, SIGNAL(rejected()), this, SLOT(stop_timer())); //закрытие окна, останавливаем таймер
+
 }
 
 MainWindow::~MainWindow()
@@ -331,9 +339,23 @@ void MainWindow::on_checkBox_stateChanged(int arg1)
 
 void MainWindow::on_pushButton_diagram_clicked()
 {
-    ddialog = new DDialog(this);
-    ddialog->show();
-    ddialog->show_diagram(wh, ui->checkBox->isChecked());
 
+    ddialog->show();
+
+    tmr->start();
+
+}
+void MainWindow::show_diagram()
+{
+    for(int i = 0;i<5;i++)
+    {
+        wh[0][i].quantity +=5;
+    }
+    ddialog->show_diagram(wh);
+}
+
+void MainWindow::stop_timer()
+{
+    tmr->stop();
 }
 

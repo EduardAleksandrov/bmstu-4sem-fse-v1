@@ -39,9 +39,14 @@ private slots:
 
     void on_pushButton_diagram_clicked();
 
+    void show_diagram();
+
+    void stop_timer();
+
 private:
     Ui::MainWindow *ui;
     Warehouse *wh;
     DDialog *ddialog;
+    QTimer* tmr;
 };
 #endif // MAINWINDOW_H
