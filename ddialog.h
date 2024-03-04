@@ -21,7 +21,7 @@ public:
 
 private:
     Ui::DDialog *ui;
-
+//для динамики
     QBarSet *centralFedDistr;
     QBarSeries *series;
     QList<QBarSet *> sets;

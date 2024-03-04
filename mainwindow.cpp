@@ -17,8 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->radioButton->setChecked(true);
     ui->radioButton_3->setChecked(true);
-//таймер
-    ddialog = new DDialog(this, ui->checkBox->isChecked(), wh);
+//таймер для диаграммы и сама диаграмма
+    ddialog = new DDialog(this, ui->checkBox->isChecked(), wh); // создаем диаграмму
 
     tmr = new QTimer(this); // Создаем объект класса QTimer и передаем адрес переменной
     connect(tmr, SIGNAL(timeout()), this, SLOT(show_diagram())); // Подключаем сигнал таймера к нашему слоту
@@ -340,12 +340,12 @@ void MainWindow::on_checkBox_stateChanged(int arg1)
 void MainWindow::on_pushButton_diagram_clicked()
 {
 
-    ddialog->show();
+    ddialog->show(); //показываем диаграмму
 
-    tmr->start();
+    tmr->start(); // запускаем таймер
 
 }
-void MainWindow::show_diagram()
+void MainWindow::show_diagram() // передаем данные в диаграмму
 {
     for(int i = 0;i<5;i++)
     {
@@ -354,7 +354,7 @@ void MainWindow::show_diagram()
     ddialog->show_diagram(wh);
 }
 
-void MainWindow::stop_timer()
+void MainWindow::stop_timer()// останавливаем таймер
 {
     tmr->stop();
 }
